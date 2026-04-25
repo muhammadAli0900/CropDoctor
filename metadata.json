@@ -1,0 +1,12 @@
+{
+  "name": "Crop Doctor",
+  "description": "AI-powered crop disease detection tool for farmers.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "Image Recognition",
+    "Agricultural Diagnostics",
+    "Multilingual Support"
+  ]
+}
