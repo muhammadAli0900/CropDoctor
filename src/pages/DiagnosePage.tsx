@@ -2,10 +2,6 @@ import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Upload, X, Loader2, CheckCircle2, ShieldAlert, Info, ChevronDown, Share2, RefreshCw } from "lucide-react";
 import { cn } from "../lib/utils";
-import { GoogleGenAI, Type } from "@google/genai";
-
-// Initialize Gemini Client
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 interface DiagnosisResult {
   disease: string;
@@ -65,60 +61,22 @@ export default function DiagnosePage() {
     
     try {
       const base64Data = image.split(",")[1];
-      
-      const prompt = "You are an expert agricultural scientist with 20 years of experience. Analyze this crop image precisely and provide a diagnosis.";
-
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: [
-          {
-            parts: [
-              { text: prompt },
-              { inlineData: { data: base64Data, mimeType } }
-            ]
-          }
-        ],
-        config: {
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              disease: { type: Type.STRING },
-              cause: { type: Type.STRING },
-              severity: { 
-                type: Type.STRING,
-                enum: ["Mild", "Moderate", "Severe"]
-              },
-              treatment: { 
-                type: Type.ARRAY,
-                items: { type: Type.STRING },
-                description: "List of 5 treatment steps"
-              },
-              prevention: { 
-                type: Type.ARRAY,
-                items: { type: Type.STRING },
-                description: "List of 3 prevention tips"
-              },
-              urdu_summary: { type: Type.STRING, description: "Key points in simple Urdu" }
-            },
-            required: ["disease", "cause", "severity", "treatment", "prevention", "urdu_summary"]
-          }
-        }
+      const response = await fetch("/api/diagnose", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: base64Data, mimeType }),
       });
 
-      const text = response.text;
-      if (!text) throw new Error("No data received from AI.");
-      
-      const data = JSON.parse(text);
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || "Failed to analyze image");
+      }
+
+      const data = await response.json();
       setResult(data);
     } catch (err: any) {
       console.error("Diagnosis Error:", err);
-      // Handle the specific "API key not valid" error message if it pops up to guide the user
-      if (err.message?.includes("API key not valid")) {
-        setError("Invalid Gemini API Key. Please ensure it is correctly set in the Secrets panel.");
-      } else {
-        setError(err.message || "An unexpected error occurred during diagnosis.");
-      }
+      setError(err.message || "An unexpected error occurred during diagnosis.");
     } finally {
       setLoading(false);
     }
