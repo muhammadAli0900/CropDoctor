@@ -26,7 +26,7 @@ To run this project locally or deploy it to Vercel/Cloud Run, you need to set up
 
 1.  **Clone the Repository**:
     ```bash
-    git clone <your-repo-url>
+    git clone https://github.com/muhammadAli0900/CropDoctor.git
     cd crop-doctor
     ```
 
