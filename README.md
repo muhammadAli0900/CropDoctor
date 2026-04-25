@@ -26,7 +26,7 @@ To run this project locally or deploy it to Vercel/Cloud Run, you need to set up
 
 1.  **Clone the Repository**:
     ```bash
-    git clone https://github.com/muhammadAli0900/CropDoctor.git
+    git clone <your-repo-url>
     cd crop-doctor
     ```
 
@@ -47,9 +47,22 @@ To run this project locally or deploy it to Vercel/Cloud Run, you need to set up
     ```
 
 ## 🌐 AI Studio Project
-You can view and interact with the live development version of this project here:
-[Crop Doctor on AI Studio](https://ais-dev-aplxw5rpfa56m4ctfg3wyh-865705618541.asia-southeast1.run.app)
+You can view and interact with the live public version of this project here:
+[Crop Doctor on AI Studio (Public)](https://ais-pre-aplxw5rpfa56m4ctfg3wyh-865705618541.asia-southeast1.run.app)
 
+## 📦 Deployment
+You can deploy this project using two main methods:
+
+### Method A: Google Cloud Run (Recommended for AI Seekho)
+1. Click the **"Deploy"** button in AI Studio.
+2. Follow the prompts to provision a Cloud Run service.
+3. Ensure your `GEMINI_API_KEY` is added to the service's environment variables.
+
+### Method B: Vercel
+1. Push this code to a **GitHub** repository.
+2. Open [Vercel](https://vercel.com) and import the repository.
+3. Add `GEMINI_API_KEY` to the **Environment Variables** in the Vercel dashboard.
+4. Vercel will use the provided `vercel.json` to automatically configure the SPA and the Node.js API routes.
 
 ---
 *Built for Google AI Seekho | Powered by Gemini 1.5 Flash*
