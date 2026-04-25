@@ -3,12 +3,16 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/diagnose"
+      "destination": "/server.ts"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "functions": {
     "server.ts": {
-      "runtime": "vercel-node@latest",
+      "runtime": "@vercel/node",
       "memory": 1024,
       "maxDuration": 15
     }
