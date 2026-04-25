@@ -50,10 +50,6 @@ To run this project locally or deploy it to Vercel/Cloud Run, you need to set up
 You can view and interact with the live development version of this project here:
 [Crop Doctor on AI Studio](https://ais-dev-aplxw5rpfa56m4ctfg3wyh-865705618541.asia-southeast1.run.app)
 
-## 📦 Deployment
-This app is optimized for **Vercel** or **Google Cloud Run**.
-- For Vercel, simply link your GitHub repo and add the `GEMINI_API_KEY` to the Environment Variables section in the Vercel Dashboard.
-- The entry point for the backend is `server.ts`.
 
 ---
 *Built for Google AI Seekho | Powered by Gemini 1.5 Flash*
