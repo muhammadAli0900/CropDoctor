@@ -2,19 +2,12 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/server.ts"
+      "source": "/api/diagnose",
+      "destination": "/api/diagnose.ts"
     },
     {
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "functions": {
-    "server.ts": {
-      "runtime": "@vercel/node",
-      "memory": 1024,
-      "maxDuration": 15
-    }
-  }
+  ]
 }
