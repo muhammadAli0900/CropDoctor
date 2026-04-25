@@ -18,7 +18,7 @@ function getAI() {
   if (!genAI) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      throw new Error("GEMINI_API_KEY is missing. Please set it in the Secrets panel.");
+      throw new Error("GEMINI_API_KEY is missing. Check Vercel Environment Variables.");
     }
     genAI = new GoogleGenAI({ apiKey });
   }
@@ -34,10 +34,11 @@ app.post("/api/diagnose", async (req, res) => {
     }
 
     const ai = getAI();
-    const prompt = "You are an expert agricultural scientist with 20 years of experience. Analyze this crop image precisely and provide a diagnosis.";
+    // Use Gemini 1.5 Flash for speed (crucial for Vercel timeouts)
+    const prompt = "You are an expert agricultural scientist. Analyze this crop image precisely and provide a diagnosis.";
 
     const response = await ai.models.generateContent({
-      model: "gemini-1.5-flash", 
+      model: "gemini-1.5-flash",
       contents: [
         {
           parts: [
@@ -53,21 +54,10 @@ app.post("/api/diagnose", async (req, res) => {
           properties: {
             disease: { type: Type.STRING },
             cause: { type: Type.STRING },
-            severity: { 
-              type: Type.STRING,
-              enum: ["Mild", "Moderate", "Severe"]
-            },
-            treatment: { 
-              type: Type.ARRAY,
-              items: { type: Type.STRING },
-              description: "List of 5 treatment steps"
-            },
-            prevention: { 
-              type: Type.ARRAY,
-              items: { type: Type.STRING },
-              description: "List of 3 prevention tips"
-            },
-            urdu_summary: { type: Type.STRING, description: "Key points in simple Urdu" }
+            severity: { type: Type.STRING, enum: ["Mild", "Moderate", "Severe"] },
+            treatment: { type: Type.ARRAY, items: { type: Type.STRING } },
+            prevention: { type: Type.ARRAY, items: { type: Type.STRING } },
+            urdu_summary: { type: Type.STRING }
           },
           required: ["disease", "cause", "severity", "treatment", "prevention", "urdu_summary"]
         }
@@ -84,24 +74,20 @@ app.post("/api/diagnose", async (req, res) => {
   }
 });
 
-async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
+// For local development
+if (process.env.NODE_ENV !== "production") {
+  const startLocalServer = async () => {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
     app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on http://localhost:${PORT}`);
     });
-  }
-
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
+  };
+  startLocalServer();
 }
 
-startServer();
+// Export for Vercel
+export default app;

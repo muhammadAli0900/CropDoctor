@@ -95,7 +95,7 @@ export default function LandingPage() {
             <div className="aspect-video bg-brand-cream rounded-3xl mb-6 overflow-hidden border border-brand-oat flex items-center justify-center relative">
               <div className="absolute inset-0 bg-gradient-to-t from-brand-deep/20 to-transparent" />
               <img 
-                src="https://images.unsplash.com/photo-1542601906990-b4d3fb778eff?auto=format&fit=crop&q=80&w=1000" 
+                src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=1000" 
                 alt="Late Blight Sample"
                 className="w-full h-full object-cover"
               />
